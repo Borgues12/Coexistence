@@ -4,8 +4,8 @@ import { useAuthStore } from "../../features/auth/presentation/store/use-auth-st
 import { LoginScreen } from "../../features/auth/presentation/screens/login.screen";
 
 import { CrearOUnirseSalaScreen } from "../../features/salas/presentation/screens/crear-unirse-sala.screen";
-import { HomeScreen } from "../../features/salas/presentation/screens/home.screen";
 import { RootStackParamList } from "./types";
+import { SalaTabsNavigator } from "./sala-tabs.navigator";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -25,7 +25,7 @@ export function RootNavigator() {
             component={CrearOUnirseSalaScreen}
           />
         ) : (
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="SalaTabs" component={SalaTabsNavigator} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

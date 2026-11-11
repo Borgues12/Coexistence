@@ -68,7 +68,7 @@ export function HomeScreen() {
             setHoraInicioInput={vm.setHoraInicioInput}
             guardandoHora={vm.guardandoHora}
             errorHora={vm.errorHora}
-            sesionEstado={vm.sesionActual}
+            sesionActual={vm.sesionActual}
             handleGuardarHora={vm.handleGuardarHora}
           />
 

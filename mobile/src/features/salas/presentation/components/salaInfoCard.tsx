@@ -1,6 +1,7 @@
 // features/salas/presentation/components/SalaInfoCard/SalaInfoCard.tsx
 import { View, Text } from "react-native";
-import { styles } from "../styles/salaInfoCard.styles";
+import { TarjetaSolida } from "../../../../shared/components/TarjetaSolida";
+import { styles } from "./styles/SalaInfoCard.styles";
 
 type SalaInfoCardProps = {
   salaNombre: string;
@@ -9,10 +10,14 @@ type SalaInfoCardProps = {
 
 export function SalaInfoCard({ salaNombre, salaCodigoInvitacion }: SalaInfoCardProps) {
   return (
-    <View style={styles.contenedor}>
-      <Text>Sala actual: {salaNombre}</Text>
-      <Text style={styles.codigoLabel}>Código de invitación</Text>
-      <Text style={styles.codigo}>{salaCodigoInvitacion}</Text>
-    </View>
+    <TarjetaSolida>
+      <Text style={styles.etiqueta}>Sala actual</Text>
+      <Text style={styles.nombre}>{salaNombre}</Text>
+
+      <View style={styles.bloqueCodigo}>
+        <Text style={styles.codigoEtiqueta}>Código de invitación</Text>
+        <Text style={styles.codigo}>{salaCodigoInvitacion}</Text>
+      </View>
+    </TarjetaSolida>
   );
 }

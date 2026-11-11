@@ -1,9 +1,11 @@
 // features/salas/presentation/components/SesionEstadoPanel/SesionEstadoPanel.tsx
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { colores } from "../../../../core/theme/tema";
-import { styles } from "../styles/sesionEstadoPanel.styles";
+import { TarjetaSolida } from "../../../../shared/components/TarjetaSolida";
+import { Boton } from "../../../../shared/components/Boton";
 import { Sesion } from "../../../sesiones/domain/sesion.domain";
+import { styles } from "./styles/SesionEstadoPanel.styles";
+import { colores } from "../../../../core/theme/tema";
 
 type SesionEstadoPanelProps = {
   sesionActual: Sesion | null;
@@ -11,6 +13,21 @@ type SesionEstadoPanelProps = {
   usuarioUid: string | undefined;
   handleIniciarSesion: () => void;
 };
+
+type InsigniaProps = {
+  icono: keyof typeof Ionicons.glyphMap;
+  color: string;
+  texto: string;
+};
+
+function Insignia({ icono, color, texto }: InsigniaProps) {
+  return (
+    <View style={styles.insignia}>
+      <Ionicons name={icono} size={18} color={color} />
+      <Text style={[styles.insigniaTexto, { color }]}>{texto}</Text>
+    </View>
+  );
+}
 
 export function SesionEstadoPanel({
   sesionActual,
@@ -20,12 +37,21 @@ export function SesionEstadoPanel({
 }: SesionEstadoPanelProps) {
   if (sesionActual?.sesionEstado === "pendiente") {
     return (
-      <TouchableOpacity style={styles.botonIniciar} onPress={handleIniciarSesion} disabled={sesionCargando}>
-        <Ionicons name="play-circle" size={22} color={colores.textoSobreFondo} />
-        <Text style={styles.botonIniciarTexto}>
-          {sesionCargando ? "Iniciando..." : "Iniciar Sesión"}
+      <TarjetaSolida>
+        <Insignia
+          icono="time"
+          color={colores.acentoPrimarioIntenso}
+          texto="Sesión pendiente"
+        />
+        <Text style={styles.mensaje}>
+          Nadie ha iniciado la sesión. Si estás presente, inicia para abrir el check-in.
         </Text>
-      </TouchableOpacity>
+        <Boton
+          titulo={sesionCargando ? "Iniciando..." : "Iniciar sesión"}
+          onPress={handleIniciarSesion}
+          deshabilitado={sesionCargando}
+        />
+      </TarjetaSolida>
     );
   }
 
@@ -34,28 +60,35 @@ export function SesionEstadoPanel({
 
     if (fueQuienInicio) {
       return (
-        <View style={styles.pinContenedor}>
-          <Ionicons name="key" size={20} color={colores.fondo} />
-          <Text style={styles.pinLabel}>PIN de la sesión:</Text>
-          <Text style={styles.pinValor}>{sesionActual.sesionPin}</Text>
-        </View>
+        <TarjetaSolida>
+          <Insignia icono="key" color={colores.exito} texto="Sesión en curso" />
+          <View style={styles.bloquePin}>
+            <Text style={styles.pinEtiqueta}>PIN de la sesión</Text>
+            <Text style={styles.pinValor}>{sesionActual.sesionPin}</Text>
+          </View>
+          <Text style={styles.mensaje}>Díctalo a los presentes para que hagan check-in.</Text>
+        </TarjetaSolida>
       );
     }
 
     return (
-      <View style={styles.info}>
-        <Ionicons name="checkmark-circle" size={20} color={colores.exito} />
-        <Text style={styles.infoTexto}>Check-in abierto, ingresa el PIN</Text>
-      </View>
+      <TarjetaSolida>
+        <Insignia icono="checkmark-circle" color={colores.exito} texto="Sesión en curso" />
+        <Text style={styles.mensaje}>Check-in abierto, ingresa el PIN.</Text>
+      </TarjetaSolida>
     );
   }
 
   if (sesionActual?.sesionEstado === "cancelada") {
     return (
-      <View style={styles.info}>
-        <Ionicons name="close-circle" size={20} color={colores.acentoSecundario} />
-        <Text style={styles.infoTexto}>Sesión cancelada por el admin</Text>
-      </View>
+      <TarjetaSolida>
+        <Insignia
+          icono="close-circle"
+          color={colores.acentoSecundario}
+          texto="Sesión cancelada"
+        />
+        <Text style={styles.mensaje}>La sesión fue cancelada por el admin.</Text>
+      </TarjetaSolida>
     );
   }
 

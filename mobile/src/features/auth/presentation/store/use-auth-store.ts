@@ -11,7 +11,6 @@ interface AuthState {
   setUser: (user: User | null) => Promise<void>;
   setUsuario: (usuario: Usuario | null) => void;
   actualizarUsuario: (cambios: Partial<Usuario>) => void;
-
   setLoading: (loading: boolean) => void;
 }
 

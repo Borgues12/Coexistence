@@ -4,11 +4,8 @@ import {
   collection,
   doc,
   getDoc,
-  getDocs,
-  query,
   setDoc,
   updateDoc,
-  where,
   writeBatch,
 } from "firebase/firestore";
 
@@ -17,15 +14,12 @@ import {
   CrearSalaSchema,
   type Sala,
   SalaPreview,
-  SalaPreviewSchema,
   HoraInicioSchema,
 } from "../domain/sala.domain";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { db, firebaseApp } from "../../../shared/services/firebase";
 import { FindRoomByCodeRequest, FindRoomByCodeResponse } from "./dto/salas.dto";
 import { COLLECTIONS } from "../../../core/constants/colecciones";
-
-const functions = getFunctions(firebaseApp);
 
 // MÉTODO: genera un código de invitación de 6 caracteres alfanuméricos
 function generateInvitationCode(): string {

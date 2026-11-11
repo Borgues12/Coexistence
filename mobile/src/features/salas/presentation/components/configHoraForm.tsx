@@ -1,19 +1,21 @@
 // features/salas/presentation/components/ConfigHoraForm/ConfigHoraForm.tsx
 import { useState } from "react";
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { colores } from "../../../../core/theme/tema";
+import { TarjetaSolida } from "../../../../shared/components/TarjetaSolida";
+import { Boton } from "../../../../shared/components/Boton";
 import { Sesion } from "../../../sesiones/domain/sesion.domain";
 import {
   dateToTimeString,
   timeStringToDate,
-} from "../../../../core/utils/hora";
+} from "../../../../core/utils/fecha";
 import { styles } from "./styles/configHoraForm.styles";
 
-//Estados que bloquean el cambio de hora
+// Estados que bloquean el cambio de hora
 const ESTADOS_BLOQUEAN_CAMBIO_HORA: Sesion["sesionEstado"][] = [
   "pendiente",
   "en_curso",
@@ -30,7 +32,7 @@ type ConfigHoraFormProps = {
   guardandoHora: boolean;
   errorHora: string | null;
   handleGuardarHora: () => void;
-  sesionEstado: Sesion | null;
+  sesionActual: Sesion | null;
 };
 
 export function ConfigHoraForm({
@@ -43,16 +45,16 @@ export function ConfigHoraForm({
   guardandoHora,
   errorHora,
   handleGuardarHora,
-  sesionEstado,
+  sesionActual,
 }: ConfigHoraFormProps) {
   const [mostrandoPicker, setMostrandoPicker] = useState(false);
 
-  // solo admins pueden modificar la hora de inicio
+  // Solo el admin puede modificar la hora de inicio
   if (!esAdmin) return null;
 
   const estaBloqueado = Boolean(
-    sesionEstado &&
-      ESTADOS_BLOQUEAN_CAMBIO_HORA.includes(sesionEstado.sesionEstado),
+    sesionActual &&
+    ESTADOS_BLOQUEAN_CAMBIO_HORA.includes(sesionActual.sesionEstado),
   );
 
   const handleChangePicker = (evento: DateTimePickerEvent, fecha?: Date) => {
@@ -64,43 +66,58 @@ export function ConfigHoraForm({
 
   if (!mostrandoConfigHora) {
     return (
-      <TouchableOpacity
-        style={[styles.boton, estaBloqueado && styles.botonDesactivado]}
-        disabled={estaBloqueado}
-        onPress={() => {
-          setHoraInicioInput(salaHoraInicio);
-          setMostrandoConfigHora(true);
-        }}
-      >
-        <Ionicons
-          name="time-outline"
-          size={20}
-          color={colores.acentoSecundario}
+      <TarjetaSolida>
+        <View style={styles.fila}>
+          <View style={styles.columna}>
+            <Text style={styles.etiqueta}>Hora de inicio</Text>
+            <Text style={styles.hora}>{salaHoraInicio}</Text>
+          </View>
+          <Ionicons
+            name="time-outline"
+            size={28}
+            color={colores.acentoPrimarioIntenso}
+          />
+        </View>
+
+        {estaBloqueado && (
+          <Text style={styles.aviso}>
+            No se puede cambiar mientras la sesión esté pendiente, en curso o
+            aplazada.
+          </Text>
+        )}
+
+        <Boton
+          titulo="Cambiar hora"
+          variante="contorno"
+          deshabilitado={estaBloqueado}
+          onPress={() => {
+            setHoraInicioInput(salaHoraInicio);
+            setMostrandoConfigHora(true);
+          }}
         />
-        <Text style={styles.botonTexto}>Hora de inicio: {salaHoraInicio}</Text>
-      </TouchableOpacity>
+      </TarjetaSolida>
     );
   }
 
   return (
-    <View style={styles.form}>
-      <TouchableOpacity
-        style={styles.selectorHora}
+    <TarjetaSolida>
+      <Text style={styles.etiqueta}>Nueva hora de inicio</Text>
+
+      <Pressable
+        style={({ pressed }) => [
+          styles.selector,
+          pressed && styles.selectorPresionado,
+        ]}
         onPress={() => setMostrandoPicker(true)}
         disabled={guardandoHora}
       >
-        <Ionicons
-          name="time-outline"
-          size={22}
-          color={colores.acentoSecundario}
-        />
-        <Text style={styles.selectorHoraTexto}>{horaInicioInput}</Text>
+        <Text style={styles.selectorTexto}>{horaInicioInput}</Text>
         <Ionicons
           name="chevron-down"
-          size={18}
-          color={colores.acentoSecundario}
+          size={20}
+          color={colores.acentoPrimario}
         />
-      </TouchableOpacity>
+      </Pressable>
 
       {mostrandoPicker && (
         <DateTimePicker
@@ -114,18 +131,17 @@ export function ConfigHoraForm({
 
       {errorHora && <Text style={styles.textoError}>{errorHora}</Text>}
 
-      <View style={styles.filaBotones}>
-        <Button
-          title={guardandoHora ? "Guardando..." : "Guardar"}
-          onPress={handleGuardarHora}
-          disabled={guardandoHora}
-        />
-        <Button
-          title="Volver"
-          onPress={() => setMostrandoConfigHora(false)}
-          disabled={guardandoHora}
-        />
-      </View>
-    </View>
+      <Boton
+        titulo={guardandoHora ? "Guardando..." : "Guardar"}
+        onPress={handleGuardarHora}
+        deshabilitado={guardandoHora}
+      />
+      <Boton
+        titulo="Volver"
+        variante="contorno"
+        onPress={() => setMostrandoConfigHora(false)}
+        deshabilitado={guardandoHora}
+      />
+    </TarjetaSolida>
   );
 }

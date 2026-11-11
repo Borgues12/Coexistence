@@ -1,51 +1,50 @@
 // features/salas/presentation/components/ConfigHoraForm/ConfigHoraForm.styles.ts
 import { StyleSheet } from "react-native";
-import { colores } from "../../../../../core/theme/tema";
+import {
+  colores,
+  tipografia,
+  espaciado,
+  bordes,
+} from "../../../../../core/theme/tema";
 
 export const styles = StyleSheet.create({
-  boton: {
+  fila: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    marginTop: 12,
+    justifyContent: "space-between",
   },
-  botonTexto: {
-    color: colores.acentoSecundario,
-    fontWeight: "600",
+  columna: { gap: espaciado.xs },
+  etiqueta: {
+    ...tipografia.etiqueta,
+    color: colores.acentoPrimarioIntenso,
+    textTransform: "uppercase",
   },
-  form: {
-    marginTop: 12,
-    gap: 8,
+  hora: {
+    ...tipografia.display,
+    color: colores.textoSobreClaro,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: colores.acentoSecundario,
-    borderRadius: 6,
-    padding: 8,
+  aviso: {
+    ...tipografia.cuerpo,
+    fontSize: 14,
+    color: colores.textoSobreClaro,
+  },
+  selector: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: espaciado.md,
+    backgroundColor: colores.fondo,
+    borderRadius: bordes.radioChato,
+  },
+  selectorPresionado: { opacity: 0.85 },
+  selectorTexto: {
+    ...tipografia.display,
+    color: colores.acentoPrimario,
+    letterSpacing: 4,
   },
   textoError: {
-    color: colores.error ?? "red",
-  },
-  filaBotones: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  botonDesactivado: {
-    opacity: 0.5,
-  },
-  selectorHora: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderWidth: 1,
-    borderColor: colores.acentoSecundario,
-    borderRadius: 8,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-  },
-  selectorHoraTexto: {
-    fontSize: 28,
-    letterSpacing: 2,
-    color: colores.acentoSecundario,
+    ...tipografia.cuerpo,
+    fontSize: 14,
+    color: colores.error,
   },
 });
