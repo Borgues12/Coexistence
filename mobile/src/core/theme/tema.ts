@@ -1,19 +1,30 @@
 // core/tema.ts
+// core/tema/tema.ts (reemplazar solo el objeto `colores`)
 export const colores = {
-  fondo: "#0D1B2A",
-  fondoClaro: "#F5E6C8",
-  fondoSuperficie: "#162B40",
-  fondoSuperficieClara: "#FBF3E2",
-  acentoPrimarioIntenso: "#A8832F",
-  acentoPrimario: "#C9A24B",
-  acentoSecundario: "#8B1E3F",
-  exito: "#2E7D5B",
-  error: "#B23A2E",
-  info: "#C9A24B",
-  advertencia: "#8B1E3F",
-  textoSobreFondo: "#F5E6C8",
-  textoSobreClaro: "#0D1B2A",
-  bordeSutil: "#C9A24B33", // dorado al 20% de opacidad, para líneas finas
+  // Base (de la paleta)
+  fondo: "#2A2824",
+  fondoSuperficie: "#3A362F", // derivado: entre #2A2824 y #635849
+  acentoPrimario: "#D4B880",
+  acentoSecundario: "#934637",
+
+  // Superficies claras (derivadas del arena #D4B880)
+  fondoClaro: "#EFE3C8",
+  fondoSuperficieClara: "#E9DCBC",
+
+  // Detalles derivados
+  acentoPrimarioIntenso: "#7A5E24", // dorado oscuro, legible sobre tarjetas claras
+  bordeSutil: "#D4B88033", // arena al 20% de opacidad
+
+  // Textos
+  textoSobreFondo: "#EFE3C8",
+  textoSecundario: "#A19783", // nuevo: subtítulos y datos de apoyo sobre fondo oscuro
+  textoSobreClaro: "#2A2824",
+
+  // Estados (la paleta no trae verde, este es cálido para no desentonar)
+  exito: "#46663A",
+  error: "#A63A2C",
+  info: "#D4B880",
+  advertencia: "#934637",
 } as const;
 
 export const tipografia = {
@@ -37,6 +48,12 @@ export const tipografia = {
     fontSize: 13,
     letterSpacing: 0.4,
   },
+  marquesina: {
+    fontFamily: "Poppins_600SemiBold",
+    fontSize: 13,
+    letterSpacing: 2.5,
+    textTransform: "uppercase",
+  },
 } as const;
 
 export const espaciado = {
@@ -53,7 +70,6 @@ export const bordes = {
   anchoGrueso: 2, // nuevo: borde de tarjetas sólidas
   colorLinea: colores.bordeSutil,
 } as const;
-
 
 export const sombraSolida = {
   desplazamiento: 4, // nuevo: cuánto se corre la sombra hacia abajo-derecha

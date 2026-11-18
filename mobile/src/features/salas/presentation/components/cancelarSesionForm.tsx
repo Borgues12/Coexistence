@@ -1,8 +1,9 @@
 // features/salas/presentation/components/CancelarSesionForm/CancelarSesionForm.tsx
-import { View, Text, Button, TextInput, TouchableOpacity } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { Text, TextInput } from "react-native";
 import { colores } from "../../../../core/theme/tema";
-import { styles } from "../styles/cancelarSesionForm.styles";
+import { TarjetaSolida } from "../../../../shared/components/TarjetaSolida";
+import { BotonCasino } from "../../../../shared/components/BotonCasino";
+import { styles } from "./styles/cancelarSesionForm.styles";
 
 type CancelarSesionFormProps = {
   sePuedeCancelar: boolean;
@@ -27,40 +28,50 @@ export function CancelarSesionForm({
 
   if (!mostrandoInputCancelar) {
     return (
-      <TouchableOpacity
-        style={styles.boton}
+      <BotonCasino
+        titulo="Cancelar sesión de hoy"
+        icono="ban"
+        variante="acento"
         onPress={() => setMostrandoInputCancelar(true)}
-      >
-        <Ionicons name="ban" size={20} color={colores.acentoSecundario} />
-        <Text style={styles.botonTexto}>Cancelar sesión de hoy</Text>
-      </TouchableOpacity>
+      />
     );
   }
 
+  // El motivo es obligatorio (las reglas exigen size() > 0)
+  const motivoVacio = motivoCancelacion.trim().length === 0;
+
   return (
-    <View style={styles.form}>
+    <TarjetaSolida>
+      <Text style={styles.etiqueta}>Cancelación administrativa</Text>
+      <Text style={styles.ayuda}>
+        Nadie recibirá falta por hoy, incluso si ya había check-ins.
+      </Text>
+
       <TextInput
         style={styles.input}
         placeholder="Motivo de la cancelación"
+        placeholderTextColor={colores.textoSecundario}
         value={motivoCancelacion}
         onChangeText={setMotivoCancelacion}
+        editable={!cancelandoSesion}
         multiline
       />
-      <View style={styles.filaBotones}>
-        <Button
-          title={cancelandoSesion ? "Cancelando..." : "Confirmar"}
-          onPress={handleCancelarSesion}
-          disabled={cancelandoSesion}
-        />
-        <Button
-          title="Volver"
-          onPress={() => {
-            setMostrandoInputCancelar(false);
-            setMotivoCancelacion("");
-          }}
-          disabled={cancelandoSesion}
-        />
-      </View>
-    </View>
+
+      <BotonCasino
+        titulo={cancelandoSesion ? "Cancelando..." : "Confirmar cancelación"}
+        variante="peligro"
+        deshabilitado={cancelandoSesion || motivoVacio}
+        onPress={handleCancelarSesion}
+      />
+      <BotonCasino
+        titulo="Volver"
+        variante="contornoClaro"
+        deshabilitado={cancelandoSesion}
+        onPress={() => {
+          setMostrandoInputCancelar(false);
+          setMotivoCancelacion("");
+        }}
+      />
+    </TarjetaSolida>
   );
 }

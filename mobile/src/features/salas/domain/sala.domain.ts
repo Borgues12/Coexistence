@@ -2,6 +2,25 @@ import { z } from "zod";
 import { HORA_INICIO_POR_DEFECTO, MINUTOS_CIERRE, MINUTOS_DEL_DIA } from "../../../core/constants/sesion.constantes";
 import { parseTimeToMinutes } from "../../../shared/services/hora";
 
+// TIPO: para representar el modo de acceso a una sala
+export type ModoAccesoSala = 'crear' | 'unirse';
+// CONSTANTE: longitud del codigo de una sala
+export const LONGITUD_CODIGO_SALA = 6;
+
+// FUNCION: normalizar el input de unirse o crear sala
+export function normalizeRoomInput(modo: ModoAccesoSala, texto: string): string {
+  const limpio = texto.trim();
+  return modo === 'unirse' ? limpio.toUpperCase() : limpio;
+}
+
+// FUNCION: validar el input de unirse o crear sala
+export function isValidRoomInput(modo: ModoAccesoSala, texto: string): boolean {
+  const limpio = normalizeRoomInput(modo, texto);
+  return modo === 'crear'
+    ? limpio.length > 0
+    : limpio.length === LONGITUD_CODIGO_SALA;
+}
+
 // VARIABLE: hora de inicio de una sala (para modificarla)
 export const HoraInicioSchema = z
   .string()

@@ -1,5 +1,5 @@
 // features/salas/presentation/screens/home.screen.tsx
-import { View, Text, Button, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator } from "react-native";
 import { signOutUser } from "../../../auth/data/auth.repository";
 import { useHomeScreen } from "../hooks/useHomeScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,87 +12,98 @@ import { CancelarSesionForm } from "../components/cancelarSesionForm";
 import { useCheckinPin } from "../../../sesiones/presentation/hooks/useCheckIn";
 import { useAuthStore } from "../../../auth/presentation/store/use-auth-store";
 import { TableroPin } from "../../../sesiones/presentation/components/TableroPin";
+import { BotonCasino } from "../../../../shared/components/BotonCasino";
 
 export function HomeScreen() {
-  
   const vm = useHomeScreen();
   const usuario = useAuthStore((state) => state.usuario);
   const checkin = useCheckinPin(vm.sesionActual?.sesionId, usuario?.userUid);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.titulo}>
-        Bienvenido, {vm.usuario?.userDisplayName}
-      </Text>
-
-      {vm.cargandoSala ? (
-        <ActivityIndicator />
-      ) : vm.sala ? (
-        <View style={styles.salaInfo}>
-          <SalaInfoCard
-            salaNombre={vm.sala.salaNombre}
-            salaCodigoInvitacion={vm.sala.salaCodigoInvitacion}
-          />
-
-          <SesionEstadoPanel
-            sesionActual={vm.sesionActual}
-            sesionCargando={vm.sesionCargando}
-            usuarioUid={vm.usuario?.userUid}
-            handleIniciarSesion={vm.handleIniciarSesion}
-          />
-
-          {vm.sesionActual?.sesionEstado === "en_curso" && (
-            <TableroPin
-              pin={checkin.pin}
-              longitud={checkin.longitudPin}
-              errorPin={checkin.errorPin}
-              yaHiceCheckin={checkin.yaHiceCheckin}
-              puedeEnviarPin={checkin.puedeEnviarPin}
-              onChangePin={checkin.handleChangePin}
-              onSubmit={checkin.handleSubmitPin}
-              mostrandoModalMotivo={checkin.mostrandoModalMotivo}
-              motivo={checkin.motivo}
-              puedeEnviarMotivo={checkin.puedeEnviarMotivo}
-              onChangeMotivo={checkin.setMotivo}
-              onConfirmMotivo={checkin.handleConfirmMotivo}
-              onCancelMotivo={checkin.handleCancelMotivo}
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.contenido}
+        keyboardShouldPersistTaps="handled"
+      >
+        <Text style={styles.titulo}>
+          Bienvenido, {vm.usuario?.userDisplayName}
+        </Text>
+        {vm.cargandoSala ? (
+          <ActivityIndicator />
+        ) : vm.sala ? (
+          <View style={styles.salaInfo}>
+            <SalaInfoCard
+              salaNombre={vm.sala.salaNombre}
+              salaCodigoInvitacion={vm.sala.salaCodigoInvitacion}
             />
-          )}
 
-          <ConfigHoraForm
-            esAdmin={vm.esAdmin}
-            salaHoraInicio={vm.sala.salaHoraInicio}
-            mostrandoConfigHora={vm.mostrandoConfigHora}
-            setMostrandoConfigHora={vm.setMostrandoConfigHora}
-            horaInicioInput={vm.horaInicioInput}
-            setHoraInicioInput={vm.setHoraInicioInput}
-            guardandoHora={vm.guardandoHora}
-            errorHora={vm.errorHora}
-            sesionActual={vm.sesionActual}
-            handleGuardarHora={vm.handleGuardarHora}
-          />
+            <SesionEstadoPanel
+              sesionActual={vm.sesionActual}
+              sesionCargando={vm.sesionCargando}
+              usuarioUid={vm.usuario?.userUid}
+              handleIniciarSesion={vm.handleIniciarSesion}
+            />
 
-          <CancelarSesionForm
-            sePuedeCancelar={vm.sePuedeCancelar}
-            mostrandoInputCancelar={vm.mostrandoInputCancelar}
-            setMostrandoInputCancelar={vm.setMostrandoInputCancelar}
-            motivoCancelacion={vm.motivoCancelacion}
-            setMotivoCancelacion={vm.setMotivoCancelacion}
-            cancelandoSesion={vm.cancelandoSesion}
-            handleCancelarSesion={vm.handleCancelarSesion}
-          />
+            {vm.sesionActual?.sesionEstado === "en_curso" && (
+              <TableroPin
+                pin={checkin.pin}
+                longitud={checkin.longitudPin}
+                errorPin={checkin.errorPin}
+                yaHiceCheckin={checkin.yaHiceCheckin}
+                puedeEnviarPin={checkin.puedeEnviarPin}
+                onChangePin={checkin.handleChangePin}
+                onSubmit={checkin.handleSubmitPin}
+                mostrandoModalMotivo={checkin.mostrandoModalMotivo}
+                motivo={checkin.motivo}
+                puedeEnviarMotivo={checkin.puedeEnviarMotivo}
+                onChangeMotivo={checkin.setMotivo}
+                onConfirmMotivo={checkin.handleConfirmMotivo}
+                onCancelMotivo={checkin.handleCancelMotivo}
+              />
+            )}
 
-          <Button
-            title={vm.saliendoDeSala ? "Saliendo..." : "Salir de la sala"}
-            onPress={vm.handleSalirDeSala}
-            disabled={vm.saliendoDeSala}
-          />
-        </View>
-      ) : (
-        <Text>No perteneces a ninguna sala aún</Text>
-      )}
+            <ConfigHoraForm
+              esAdmin={vm.esAdmin}
+              salaHoraInicio={vm.sala.salaHoraInicio}
+              mostrandoConfigHora={vm.mostrandoConfigHora}
+              setMostrandoConfigHora={vm.setMostrandoConfigHora}
+              horaInicioInput={vm.horaInicioInput}
+              setHoraInicioInput={vm.setHoraInicioInput}
+              guardandoHora={vm.guardandoHora}
+              errorHora={vm.errorHora}
+              sesionActual={vm.sesionActual}
+              handleGuardarHora={vm.handleGuardarHora}
+            />
 
-      <Button title="Cerrar sesión" onPress={signOutUser} />
+            <CancelarSesionForm
+              sePuedeCancelar={vm.sePuedeCancelar}
+              mostrandoInputCancelar={vm.mostrandoInputCancelar}
+              setMostrandoInputCancelar={vm.setMostrandoInputCancelar}
+              motivoCancelacion={vm.motivoCancelacion}
+              setMotivoCancelacion={vm.setMotivoCancelacion}
+              cancelandoSesion={vm.cancelandoSesion}
+              handleCancelarSesion={vm.handleCancelarSesion}
+            />
+
+            <BotonCasino
+              titulo={vm.saliendoDeSala ? "Saliendo..." : "Salir de la sala"}
+              icono="exit-outline"
+              variante="peligro"
+              onPress={vm.handleSalirDeSala}
+              deshabilitado={vm.saliendoDeSala}
+            />
+          </View>
+        ) : (
+          <Text style={styles.sinSala}>No perteneces a ninguna sala aún</Text>
+        )}
+      </ScrollView>
+      <BotonCasino
+        titulo="Cerrar sesión"
+        icono="log-out-outline"
+        variante="contorno"
+        onPress={signOutUser}
+      />
     </SafeAreaView>
   );
 }

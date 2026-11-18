@@ -25,11 +25,13 @@ interface SalaState {
   sala: Sala | SalaPreview | null;
   isLoading: boolean;
   error: string | null;
+  reset: () => void;
   obtenerSala: (salaId: string) => Promise<Sala | null>;
   crear: (salaNombre: string, adminUid: string) => Promise<void>;
   unirse: (salaCodigoInvitacion: string, userUid: string) => Promise<void>;
   updateStartTime: (salaId: string, salaHoraInicio: string) => Promise<void>;
   salirDeSala: (salaId: string, userUid: string) => Promise<void>;
+  
 }
 
 // VARIABLE: sirve para almacenar el estado de la sala
@@ -37,6 +39,8 @@ export const useSalaStore = create<SalaState>((set) => ({
   sala: null,
   isLoading: false,
   error: null,
+  // METODO: reinicia el estado de la sala
+  reset: () => set({ error: null, sala: null }),
   obtenerSala: async (salaId: string) => {
     set({ isLoading: true });
     try {
@@ -74,16 +78,23 @@ export const useSalaStore = create<SalaState>((set) => ({
     set({ isLoading: true, error: null });
     try {
       console.log("[unirse] buscando código");
+
       const sala = await findByInvitationCode(salaCodigoInvitacion);
+
       console.log("[unirse] sala encontrada:", sala?.salaId);
+
       if (!sala) {
         set({ error: "No existe una sala con ese código", isLoading: false });
         return;
       }
       await joinRoom(sala.salaId, userUid);
+
       console.log("[unirse] joinRoom ok");
+
       await updateUserRoom(userUid, sala.salaId);
+
       console.log("[unirse] updateUserRoom ok");
+
       //suscribirse al topic para recibir notificaciones
       subscribeToRoomTopic(sala.salaId).catch((e) =>
         console.warn("No se pudo suscribir al topic:", e),
@@ -95,7 +106,9 @@ export const useSalaStore = create<SalaState>((set) => ({
       });
       set({ sala, isLoading: false });
     } catch (err) {
+
       console.error("Error al unirse a sala:", err);
+
       set({ error: "No se pudo unir a la sala", isLoading: false });
     }
   },

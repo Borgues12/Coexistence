@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuthStore } from "../../features/auth/presentation/store/use-auth-store";
 import { LoginScreen } from "../../features/auth/presentation/screens/login.screen";
 
-import { CrearOUnirseSalaScreen } from "../../features/salas/presentation/screens/crear-unirse-sala.screen";
+import { AccesoSalaScreen } from "../../features/salas/presentation/screens/acceso-sala.screen";
 import { RootStackParamList } from "./types";
 import { SalaTabsNavigator } from "./sala-tabs.navigator";
 
@@ -22,7 +22,7 @@ export function RootNavigator() {
         ) : !userSalaActualId ? (
           <Stack.Screen
             name="CrearOUnirseSala"
-            component={CrearOUnirseSalaScreen}
+            component={AccesoSalaScreen}
           />
         ) : (
           <Stack.Screen name="SalaTabs" component={SalaTabsNavigator} />

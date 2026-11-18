@@ -1,61 +1,133 @@
-// features/sesiones/presentation/components/TableroPin.styles.ts
 import { StyleSheet } from "react-native";
+import { colores, tipografia, espaciado, bordes } from "../../../../../core/theme/tema";
 
-// TODO: reemplazar por tokens de core/tema/ (los nombres reales no los conozco)
-const COLOR_FONDO = "#1a1a1a";
-const COLOR_ORO = "#c9a227";
-const COLOR_TEXTO = "#f2ead3";
-const COLOR_ERROR = "#d9534f";
+const TAMANO_MUESCA = 20;
 
 export const styles = StyleSheet.create({
+  // --- Boleto ---
   contenedor: {
-    backgroundColor: COLOR_FONDO,
-    borderWidth: 1,
-    borderColor: COLOR_ORO,
-    borderRadius: 8,
-    padding: 16,
-    gap: 12,
+    backgroundColor: colores.acentoPrimario,
+    borderRadius: bordes.radioChato,
+    padding: espaciado.sm,
   },
-  titulo: { color: COLOR_ORO, fontSize: 16, fontWeight: "600" },
+  perforacion: {
+    borderWidth: 1.5,
+    borderStyle: "dashed",
+    borderColor: colores.fondo + "66",
+    padding: espaciado.lg,
+    gap: espaciado.md,
+  },
+  muesca: {
+    position: "absolute",
+    top: "50%",
+    width: TAMANO_MUESCA,
+    height: TAMANO_MUESCA,
+    marginTop: -TAMANO_MUESCA / 2,
+    borderRadius: TAMANO_MUESCA / 2,
+    backgroundColor: colores.fondo, // debe coincidir con el fondo de la screen
+  },
+  muescaIzquierda: { left: -TAMANO_MUESCA / 2 },
+  muescaDerecha: { right: -TAMANO_MUESCA / 2 },
+
+  // --- Textos ---
+  etiqueta: {
+    ...tipografia.etiqueta,
+    color: colores.fondo,
+    opacity: 0.6,
+    textAlign: "center",
+  },
+  titulo: {
+    ...tipografia.titulo,
+    color: colores.fondo,
+    textAlign: "center",
+  },
+
+  // --- PIN ---
   input: {
-    borderWidth: 1,
-    borderColor: COLOR_ORO,
-    borderRadius: 6,
-    color: COLOR_TEXTO,
-    fontSize: 28,
+    ...tipografia.display,
     letterSpacing: 12,
     textAlign: "center",
-    paddingVertical: 10,
+    color: colores.acentoPrimario,
+    backgroundColor: colores.fondo,
+    borderRadius: bordes.radioChato,
+    paddingVertical: espaciado.md,
   },
-  error: { color: COLOR_ERROR, fontSize: 13 },
+  error: {
+    ...tipografia.etiqueta,
+    color: colores.acentoSecundario,
+    textAlign: "center",
+  },
+
+  // --- Botón principal ---
   boton: {
-    backgroundColor: COLOR_ORO,
-    borderRadius: 6,
-    paddingVertical: 12,
+    backgroundColor: colores.fondo,
+    borderRadius: bordes.radioChato,
+    paddingVertical: espaciado.md,
     alignItems: "center",
   },
+  botonPresionado: { backgroundColor: colores.acentoSecundario },
   botonDeshabilitado: { opacity: 0.4 },
-  botonTexto: { color: COLOR_FONDO, fontWeight: "700" },
-  confirmado: { color: COLOR_ORO, textAlign: "center", fontSize: 15 },
+  botonTexto: {
+    ...tipografia.etiqueta,
+    color: colores.acentoPrimario,
+  },
+
+  // --- Estado confirmado ---
+  confirmadoContenedor: {
+    alignItems: "center",
+    gap: espaciado.sm,
+    paddingVertical: espaciado.md,
+  },
+  confirmado: {
+    ...tipografia.titulo,
+    color: colores.fondo,
+    textAlign: "center",
+  },
+
+  // --- Modal de motivo ---
   modalFondo: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.7)",
     justifyContent: "center",
-    padding: 24,
+    padding: espaciado.lg,
   },
   modalCaja: {
-    backgroundColor: COLOR_FONDO,
-    borderRadius: 8,
-    padding: 16,
-    gap: 12,
+    backgroundColor: colores.fondoSuperficie,
+    borderWidth: bordes.anchoLinea,
+    borderColor: colores.acentoPrimario,
+    borderRadius: bordes.radioChato,
+    padding: espaciado.lg,
+    gap: espaciado.md,
+  },
+  modalTitulo: {
+    ...tipografia.titulo,
+    color: colores.acentoPrimario,
   },
   inputMotivo: {
-    borderWidth: 1,
-    borderColor: COLOR_ORO,
-    borderRadius: 6,
-    color: COLOR_TEXTO,
-    padding: 10,
-    minHeight: 80,
+    ...tipografia.cuerpo,
+    color: colores.textoSobreFondo,
+    backgroundColor: colores.fondo,
+    borderWidth: bordes.anchoLinea,
+    borderColor: colores.acentoPrimario,
+    borderRadius: bordes.radioChato,
+    padding: espaciado.md,
+    minHeight: 96,
     textAlignVertical: "top",
+  },
+  modalBoton: {
+    backgroundColor: colores.acentoPrimario,
+    borderRadius: bordes.radioChato,
+    paddingVertical: espaciado.md,
+    alignItems: "center",
+  },
+  modalBotonTexto: {
+    ...tipografia.etiqueta,
+    color: colores.textoSobreClaro,
+  },
+  modalCancelar: {
+    ...tipografia.cuerpo,
+    color: colores.textoSobreFondo,
+    opacity: 0.7,
+    textAlign: "center",
   },
 });

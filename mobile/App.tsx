@@ -26,7 +26,7 @@ function AppContenido() {
         visible={!permitido}
         onActivar={enableNotifications}
       />
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <AlertaHost />
     </SafeAreaProvider>
   );
