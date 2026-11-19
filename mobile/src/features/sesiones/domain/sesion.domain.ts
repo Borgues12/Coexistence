@@ -45,7 +45,7 @@ export type CrearSesionInput = z.infer<typeof CrearSesionSchema>;
 // útil para tipar el resultado de updateToEnCurso sin manejar null en la pantalla de check-in
 export const SesionEnCursoSchema = SesionSchema.extend({
   sesionEstado: z.literal("en_curso"),
-  sesionPin: z.string().length(3),
+  sesionPin: z.string().length(4),
   sesionIniciadaPorUid: z.string(),
 });
 export type SesionEnCurso = z.infer<typeof SesionEnCursoSchema>;

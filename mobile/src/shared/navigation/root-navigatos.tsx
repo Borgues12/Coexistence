@@ -6,6 +6,7 @@ import { LoginScreen } from "../../features/auth/presentation/screens/login.scre
 import { AccesoSalaScreen } from "../../features/salas/presentation/screens/acceso-sala.screen";
 import { RootStackParamList } from "./types";
 import { SalaTabsNavigator } from "./sala-tabs.navigator";
+import { MenuAjustesFlotante } from "../components/ajustes/MenuAjustesFlotante";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -28,6 +29,8 @@ export function RootNavigator() {
           <Stack.Screen name="SalaTabs" component={SalaTabsNavigator} />
         )}
       </Stack.Navigator>
+
+      {user && <MenuAjustesFlotante />}
     </NavigationContainer>
   );
 }

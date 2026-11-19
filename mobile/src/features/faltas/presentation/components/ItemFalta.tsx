@@ -41,15 +41,19 @@ interface Props {
 
 export function ItemFalta({ falta, onPress }: Props) {
   const config = CONFIG_POR_TIPO[falta.faltaTipo];
+
   return (
     <Pressable
       style={({ pressed }) => [styles.celda, pressed && styles.celdaPresionada]}
       onPress={() => onPress(falta)}
     >
-      <View style={[styles.tarjeta, { borderColor: config.color + "55" }]}>
-        <Ionicons name={config.icono} size={22} color={config.color} />
-        <Text style={styles.dia}>{falta.faltaFecha.slice(8, 10)}</Text>
-        <Text style={styles.mes}>{formatShortMonth(falta.faltaFecha)}</Text>
+      <View style={[styles.tarjeta, { borderColor: config.color }]}>
+        <Text style={styles.dia} allowFontScaling={false}>
+          {falta.faltaFecha.slice(8, 10)}
+        </Text>
+        <Text style={styles.mes} allowFontScaling={false}>
+          {formatShortMonth(falta.faltaFecha)}
+        </Text>
       </View>
     </Pressable>
   );

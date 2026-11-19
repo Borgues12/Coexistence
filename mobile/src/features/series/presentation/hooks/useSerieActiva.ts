@@ -8,6 +8,8 @@ import { useSeriesStore } from "../store/series.store";
 import { timeStringToDate } from "../../../../core/utils/fecha";
 import { dateToTimeString } from "../../../../shared/services/hora";
 
+
+// HOOK: maneja la información de la serie activa de la sala, y el horario del episodio actual
 export function useSerieActiva() {
   const [cambiando, setCambiando] = useState(false);
   const startChange = useCallback(() => setCambiando(true), []);
@@ -29,6 +31,9 @@ export function useSerieActiva() {
 
   const horario = useMemo(() => {
     if (!serieActiva || !salaHoraInicio) return null;
+    const episodio = serieActiva.serieEpisodiosTemporada.find(
+    (e) => e.episodioNumero === serieActiva.serieEpisodioActual,
+  );
     const duracion = getEpisodeDuration(
       serieActiva.serieEpisodiosTemporada,
       serieActiva.serieEpisodioActual,
@@ -36,6 +41,7 @@ export function useSerieActiva() {
     const inicio = timeStringToDate(salaHoraInicio);
     const fin = calculateSessionEndTime(inicio, duracion);
     return {
+      nombreEpisodio: episodio?.episodioNombre ?? "",
       duracion,
       horaInicio: salaHoraInicio,
       horaFin: dateToTimeString(fin),

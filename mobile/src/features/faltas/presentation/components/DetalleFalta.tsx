@@ -24,43 +24,48 @@ export function DetalleFalta({ falta, onClose }: Props) {
       <View style={styles.fondo}>
         <Pressable style={StyleSheet.absoluteFill} onPress={onClose} />
         {falta && config && (
-          <View style={[styles.tarjeta, { borderColor: config.color }]}>
-            <View style={styles.encabezado}>
-              <Ionicons name={config.icono} size={28} color={config.color} />
-              <Text style={[styles.titulo, { color: config.color }]}>
-                {config.singular}
-              </Text>
-            </View>
+          <View style={styles.cajaContenedor}>
+            <View style={styles.sombra} />
+            <View style={styles.tarjeta}>
+              <View style={styles.encabezado}>
+                <Ionicons name={config.icono} size={28} color={config.color} />
+                <Text style={[styles.titulo, { color: config.color }]}>
+                  {config.singular}
+                </Text>
+              </View>
 
-            <View style={styles.fila}>
-              <Ionicons
-                name="calendar-outline"
-                size={18}
-                color={colores.acentoPrimario}
-              />
-              <Text style={styles.valor}>{formatLongDate(falta.faltaFecha)}</Text>
-            </View>
+              <View style={styles.fila}>
+                <Ionicons
+                  name="calendar-outline"
+                  size={18}
+                  color={colores.acentoPrimarioIntenso}
+                />
+                <Text style={styles.valor}>
+                  {formatLongDate(falta.faltaFecha)}
+                </Text>
+              </View>
 
-            <View style={styles.fila}>
-              <Ionicons
-                name="chatbubble-ellipses-outline"
-                size={18}
-                color={colores.acentoPrimario}
-              />
-              <Text style={styles.valor}>
-                {falta.faltaMotivo ?? "Sin motivo (falta automática)"}
-              </Text>
-            </View>
+              <View style={styles.fila}>
+                <Ionicons
+                  name="chatbubble-ellipses-outline"
+                  size={18}
+                  color={colores.acentoPrimarioIntenso}
+                />
+                <Text style={styles.valor}>
+                  {falta.faltaMotivo ?? "Sin motivo (falta automática)"}
+                </Text>
+              </View>
 
-            <View style={styles.fila}>
-              <Ionicons
-                name="flag-outline"
-                size={18}
-                color={colores.acentoPrimario}
-              />
-              <Text style={[styles.valor, styles.estado]}>
-                {falta.faltaEstado}
-              </Text>
+              <View style={styles.fila}>
+                <Ionicons
+                  name="flag-outline"
+                  size={18}
+                  color={colores.acentoPrimarioIntenso}
+                />
+                <Text style={[styles.valor, styles.estado]}>
+                  {falta.faltaEstado}
+                </Text>
+              </View>
             </View>
           </View>
         )}

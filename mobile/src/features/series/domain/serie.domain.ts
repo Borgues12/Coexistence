@@ -5,6 +5,7 @@ export const serieEstadoSchema = z.enum(["activa", "temporada_finalizada"]);
 
 export const episodioSerieSchema = z.object({
   episodioNumero: z.number().int().positive(),
+  episodioNombre: z.string().optional(), // opcional: series ya guardadas no lo tienen
   episodioDuracion: z.number().int().positive().nullable(), // null = TMDB sin runtime
 });
 export type EpisodioSerie = z.infer<typeof episodioSerieSchema>;
@@ -23,14 +24,15 @@ export const serieSchema = z
     serieElegidaPorUid: z.string().min(1),
   })
   .refine(
-  (s) => s.serieEpisodiosTemporada.some(
-    (e) => e.episodioNumero === s.serieEpisodioActual,
-  ),
-  {
-    message: "El episodio actual no existe en la temporada",
-    path: ["serieEpisodioActual"],
-  },
-);
+    (s) =>
+      s.serieEpisodiosTemporada.some(
+        (e) => e.episodioNumero === s.serieEpisodioActual,
+      ),
+    {
+      message: "El episodio actual no existe en la temporada",
+      path: ["serieEpisodioActual"],
+    },
+  );
 
 export type Serie = z.infer<typeof serieSchema>;
 export type SerieEstado = z.infer<typeof serieEstadoSchema>;
@@ -55,7 +57,10 @@ export function getEpisodeDuration(
 }
 
 /** Momento exacto en que termina la sesión: inicio + duración del episodio. */
-export function calculateSessionEndTime(inicio: Date, duracionMin: number): Date {
+export function calculateSessionEndTime(
+  inicio: Date,
+  duracionMin: number,
+): Date {
   return new Date(inicio.getTime() + duracionMin * 60_000);
 }
 

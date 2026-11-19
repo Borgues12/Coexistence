@@ -1,78 +1,100 @@
-import { View, Text, Button, Alert, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Alert, StyleSheet, Image } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useAuthStore } from "../store/use-auth-store";
 import {
   signInWithEmailPassword,
   signInWithGoogle,
   signOutUser,
 } from "../../data/auth.repository";
+import { BotonCasino } from "../../../../shared/components/BotonCasino";
+import {
+  colores,
+  tipografia,
+  espaciado,
+} from "../../../../core/theme/tema";
 
 export function LoginScreen() {
   const user = useAuthStore((state) => state.user);
   const setUser = useAuthStore((state) => state.setUser);
 
   const handleSignIn = async () => {
-    console.log('1. 🔘 Presionaste el botón de Iniciar Sesión con Google');
+    console.log("[Auth] Iniciando sesión con Google");
     try {
-      console.log('2. 🚀 Llamando a signInWithGoogle()...');
-      const user = await signInWithGoogle();
-      console.log('3. 🕒 Usuario autenticado:', user);
-      setUser(user);
+      const authenticatedUser = await signInWithGoogle();
+      console.log("[Auth] Usuario autenticado:", authenticatedUser?.uid);
+      setUser(authenticatedUser);
     } catch (error: any) {
-      console.error('4. ❌ Error al iniciar sesión:', error);
+      console.error("[Auth] Error al iniciar sesión con Google:", error);
       Alert.alert("Error al iniciar sesión", error.message);
     }
   };
 
-  // FUNCION: solo para pruebas de desarrollo, inicia sesión con un correo electrónico y contraseña predefinidos
   async function handleDevLogin(email: string) {
     try {
-      await signInWithEmailPassword(email, 'Testa.123');
+      await signInWithEmailPassword(email, "Testa.123");
     } catch (err: any) {
-      console.error('Error en login de prueba:', err);
+      console.error("[Auth] Error en login de desarrollo:", err);
       Alert.alert("Error en login de prueba", err.message);
     }
   }
 
-  // FUNCION: cierra la sesión activa, sirve tanto para Google como para usuarios de prueba
   async function handleSignOut() {
     try {
       await signOutUser();
     } catch (err: any) {
-      console.error('Error al cerrar sesión:', err);
+      console.error("[Auth] Error al cerrar sesión:", err);
       Alert.alert("Error al cerrar sesión", err.message);
     }
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.titulo}>Convivencia Audiovisual</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.cabecera}>
+        <Image
+          source={require("../../../../../assets/android-icon-foreground.png")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
+        <Text style={styles.titulo}>COEXISTENCE</Text>
+        <Text style={styles.subtitulo}>Convivencia audiovisual</Text>
+      </View>
 
-      {user ? (
-        <TouchableOpacity style={styles.botonSecundario} onPress={handleSignOut}>
-          <Text style={styles.botonSecundarioTexto}>Cerrar sesión</Text>
-        </TouchableOpacity>
-      ) : (
-        <Button title="Continuar con Google" onPress={handleSignIn} />
-      )}
+      <View style={styles.acciones}>
+        {user ? (
+          <BotonCasino
+            titulo="Cerrar sesión"
+            icono="log-out-outline"
+            variante="textoPeligro"
+            onPress={handleSignOut}
+          />
+        ) : (
+          <BotonCasino
+            titulo="Continuar con Google"
+            icono="logo-google"
+            variante="primario"
+            onPress={handleSignIn}
+          />
+        )}
+      </View>
 
       {__DEV__ && (
         <View style={styles.devLoginContainer}>
           <Text style={styles.devLabel}>Solo desarrollo</Text>
-          <TouchableOpacity
-            style={styles.devBotonContainer}
-            onPress={() => handleDevLogin('test.a@coexistence.ec')}
-          >
-            <Text style={styles.devBoton}>Login como Usuario A</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.devBotonContainer}
-            onPress={() => handleDevLogin('test.b@coexistence.ec')}
-          >
-            <Text style={styles.devBoton}>Login como Usuario B</Text>
-          </TouchableOpacity>
+          <BotonCasino
+            titulo="Login como Usuario A"
+            icono="person-outline"
+            variante="contorno"
+            onPress={() => handleDevLogin("test.a@coexistence.ec")}
+          />
+          <BotonCasino
+            titulo="Login como Usuario B"
+            icono="person-outline"
+            variante="contorno"
+            onPress={() => handleDevLogin("test.b@coexistence.ec")}
+          />
         </View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -80,48 +102,53 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    padding: espaciado.lg,
+    backgroundColor: colores.fondo,
+    gap: espaciado.xl,
+  },
+  cabecera: {
     alignItems: "center",
-    padding: 24,
-    gap: 16,
+    gap: espaciado.xs,
+  },
+  logo: {
+    width: 200,
+    height: 200,
+    marginBottom: espaciado.sm,
   },
   titulo: {
-    fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 24,
+    ...tipografia.display,
+    fontSize: 34,
+    lineHeight: 40,
+    letterSpacing: 3.5,
+    textTransform: "uppercase",
+    color: colores.acentoPrimario,
+    textAlign: "center",
   },
-  botonSecundario: {
-    borderWidth: 1,
-    borderColor: "#8B0000",
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 8,
+  subtitulo: {
+    ...tipografia.cuerpo,
+    fontSize: 18,
+    lineHeight: 24,
+    letterSpacing: 1.2,
+    color: colores.textoSecundario,
+    textAlign: "center",
   },
-  botonSecundarioTexto: {
-    color: "#8B0000",
-    fontWeight: "600",
+  acciones: {
+    width: "100%",
   },
   devLoginContainer: {
-    marginTop: 32,
+    marginTop: espaciado.md,
     borderTopWidth: 1,
-    borderTopColor: "#ddd",
-    paddingTop: 16,
-    alignItems: "center",
-    gap: 8,
+    borderTopColor: colores.bordeSutil,
+    paddingTop: espaciado.md,
+    gap: espaciado.sm,
+    opacity: 0.85,
   },
   devLabel: {
-    fontSize: 12,
-    color: "#999",
-    textTransform: "uppercase",
-    marginBottom: 4,
-  },
-  devBotonContainer: {
-    backgroundColor: "#eee",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 6,
-  },
-  devBoton: {
-    fontSize: 14,
-    color: "#333",
+    ...tipografia.marquesina,
+    fontSize: 10,
+    letterSpacing: 1.2,
+    color: colores.textoSecundario,
+    textAlign: "center",
+    marginBottom: espaciado.xs,
   },
 });

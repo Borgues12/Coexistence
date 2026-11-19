@@ -1,9 +1,50 @@
 // backend/functions/src/sesiones/logica/cerrarSesionesAutomatico.logica.ts
-import type { Firestore } from "firebase-admin/firestore";
+import type { Firestore, WriteBatch } from "firebase-admin/firestore";
 import type { Notificador } from "../../notificaciones/sala-notificaciones";
 import { getEcuadorDate, getEcuadorMinutes, parseTimeToMinutes } from "../../shared/hora";
 import { MINUTOS_CIERRE } from "../../shared/tiempo-sesion";
 import { addFaultToBatch } from "../../faltas/logica/crearFalta.logica";
+
+
+type EpisodioDoc = {
+  episodioNumero: number;
+  episodioNombre?: string;
+  episodioDuracion?: number | null;
+};
+
+// FUNCIÓN: Avanza serieEpisodioActual al siguiente episodio; si no hay más, marca "temporada_finalizada"
+async function addAdvanceEpisodeToBatch(
+  db: Firestore,
+  batch: WriteBatch,
+  salaId: string,
+): Promise<void> {
+  const serieRef = db.collection("series").doc(salaId);
+  const serieSnap = await serieRef.get();
+
+  if (!serieSnap.exists) return;
+
+  const serie = serieSnap.data();
+  if (!serie || serie.serieEstado !== "activa") return;
+
+  const episodios: EpisodioDoc[] = Array.isArray(serie.serieEpisodiosTemporada)
+    ? serie.serieEpisodiosTemporada
+    : [];
+  const episodioActual: number = serie.serieEpisodioActual;
+
+  const siguiente = episodios.find((e) => e.episodioNumero > episodioActual);
+
+  if (!siguiente) {
+    batch.update(serieRef, {
+      serieEstado: "temporada_finalizada",
+    });
+    return;
+  }
+
+  batch.update(serieRef, {
+    serieEstado: "activa",
+    serieEpisodioActual: siguiente.episodioNumero,
+  });
+}
 
 // FUNCIÓN: cierra sesiones cuya ventana ya venció y genera las faltas correspondientes
 export async function closeExpiredSessions(
@@ -53,6 +94,9 @@ export async function closeExpiredSessions(
       cuerpo = "Nadie inició la sesión: se registró falta a todos los miembros.";
     } else {
       batch.update(sesionDoc.ref, { sesionEstado: "finalizada" });
+
+      // si la sesión se cerró, se avanza al siguiente episodio de la serie
+      await addAdvanceEpisodeToBatch(db, batch, sesion.sesionSalaId);
 
       // la subcolección real es checkins; el id de cada doc es el uid del miembro
       const checkinsSnapshot = await sesionDoc.ref.collection("checkins").get();

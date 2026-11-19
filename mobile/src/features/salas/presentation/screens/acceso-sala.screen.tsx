@@ -1,10 +1,9 @@
-import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { IconoAcceso } from '../components/FichaAcceso';
-import { SelectorModoAcceso } from '../components/ModoAcceso';
-import { FormularioAccesoSala } from '../components/FormAccesoSala';
-import { useRoomAccessForm } from '../hooks/useRoomAccessForm';
-import { styles } from './styles/acceso-sala.styles';
-
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { IconoAcceso } from "../components/FichaAcceso";
+import { SelectorModoAcceso } from "../components/ModoAcceso";
+import { FormularioAccesoSala } from "../components/FormAccesoSala";
+import { useRoomAccessForm } from "../hooks/useRoomAccessForm";
+import { styles } from "./styles/acceso-sala.styles";
 
 export function AccesoSalaScreen() {
   const form = useRoomAccessForm();
@@ -12,14 +11,17 @@ export function AccesoSalaScreen() {
   return (
     <KeyboardAvoidingView
       style={styles.contenedor}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView
         contentContainerStyle={styles.contenido}
         keyboardShouldPersistTaps="handled"
       >
         <IconoAcceso />
-        <SelectorModoAcceso modoActual={form.modoActual} onSelectMode={form.handleChangeMode} />
+        <SelectorModoAcceso
+          modoActual={form.modoActual}
+          onSelectMode={form.handleChangeMode}
+        />
         <FormularioAccesoSala
           modo={form.modoActual}
           texto={form.texto}

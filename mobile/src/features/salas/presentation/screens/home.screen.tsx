@@ -20,7 +20,8 @@ export function HomeScreen() {
   const checkin = useCheckinPin(vm.sesionActual?.sesionId, usuario?.userUid);
 
   return (
-    <SafeAreaView style={styles.container}>
+    
+    <SafeAreaView style={styles.container} edges={["top","left", "right"]}>
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={styles.contenido}
@@ -62,6 +63,15 @@ export function HomeScreen() {
                 onCancelMotivo={checkin.handleCancelMotivo}
               />
             )}
+            <CancelarSesionForm
+              sePuedeCancelar={vm.sePuedeCancelar}
+              mostrandoInputCancelar={vm.mostrandoInputCancelar}
+              setMostrandoInputCancelar={vm.setMostrandoInputCancelar}
+              motivoCancelacion={vm.motivoCancelacion}
+              setMotivoCancelacion={vm.setMotivoCancelacion}
+              cancelandoSesion={vm.cancelandoSesion}
+              handleCancelarSesion={vm.handleCancelarSesion}
+            />
 
             <ConfigHoraForm
               esAdmin={vm.esAdmin}
@@ -76,16 +86,6 @@ export function HomeScreen() {
               handleGuardarHora={vm.handleGuardarHora}
             />
 
-            <CancelarSesionForm
-              sePuedeCancelar={vm.sePuedeCancelar}
-              mostrandoInputCancelar={vm.mostrandoInputCancelar}
-              setMostrandoInputCancelar={vm.setMostrandoInputCancelar}
-              motivoCancelacion={vm.motivoCancelacion}
-              setMotivoCancelacion={vm.setMotivoCancelacion}
-              cancelandoSesion={vm.cancelandoSesion}
-              handleCancelarSesion={vm.handleCancelarSesion}
-            />
-
             <BotonCasino
               titulo={vm.saliendoDeSala ? "Saliendo..." : "Salir de la sala"}
               icono="exit-outline"
@@ -98,12 +98,6 @@ export function HomeScreen() {
           <Text style={styles.sinSala}>No perteneces a ninguna sala aún</Text>
         )}
       </ScrollView>
-      <BotonCasino
-        titulo="Cerrar sesión"
-        icono="log-out-outline"
-        variante="contorno"
-        onPress={signOutUser}
-      />
     </SafeAreaView>
   );
 }

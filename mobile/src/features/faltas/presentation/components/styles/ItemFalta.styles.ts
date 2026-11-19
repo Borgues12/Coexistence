@@ -1,30 +1,42 @@
 import { StyleSheet } from "react-native";
-import { colores, espaciado } from "../../../../../core/theme/tema";
+import {
+  colores,
+  tipografia,
+  espaciado,
+  bordes,
+} from "../../../../../core/theme/tema";
 
 export const styles = StyleSheet.create({
   celda: {
     width: "20%",
     padding: espaciado.xs,
   },
+  celdaPresionada: {
+    opacity: 0.6,
+  },
   tarjeta: {
-  aspectRatio: 1,
-  alignItems: "center",
-  justifyContent: "center",
-  borderWidth: 1,
-  borderRadius: 12,
-  backgroundColor: colores.fondo,
-},
-dia: {
-  color: colores.textoSobreFondo,
-  fontSize: 13,
-  fontWeight: "bold",
-  marginTop: 2,
-},
-mes: {
-  color: colores.textoSobreFondo,
-  fontSize: 9,
-  letterSpacing: 0.8,
-  opacity: 0.6,
-},
-  celdaPresionada: { opacity: 0.6 },
+    aspectRatio: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 1,
+    backgroundColor: colores.fondoClaro,
+    borderWidth: bordes.anchoGrueso,
+    borderRadius: bordes.radioChato,
+  },
+  dia: {
+    ...tipografia.etiqueta,
+    fontSize: 20,
+    lineHeight: 22,
+    includeFontPadding: false, // Elimina el espacio extra superior/inferior en Android
+    color: colores.textoSobreClaro,
+  },
+  mes: {
+    ...tipografia.marquesina,
+    fontSize: 9,
+    lineHeight: 11,
+    letterSpacing: 1.2,
+    includeFontPadding: false,
+    color: colores.textoSobreClaro,
+    opacity: 0.65,
+  },
 });

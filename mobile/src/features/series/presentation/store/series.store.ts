@@ -25,10 +25,7 @@ type SeriesState = {
   serieActivaCargando: boolean;
   subscribeActiveSeries: (salaId: string) => () => void;
 
-  setAdminFlag: (
-    userUid: string,
-    salaAdminUid: string,
-  ) => void;
+  setAdminFlag: (userUid: string, salaAdminUid: string) => void;
 
   searchSeries: (texto: string) => Promise<ResultadoBusquedaSerie[]>;
   getSeriesDetail: (tmdbId: number) => Promise<SerieDetalle>;
@@ -78,6 +75,7 @@ export const useSeriesStore = create<SeriesState>((set, get) => ({
       serieEpisodioActual: seleccion.episodio,
       serieEpisodiosTemporada: seleccion.episodios.map((e) => ({
         episodioNumero: e.episodioNumero,
+        episodioNombre: e.episodioNombre,
         episodioDuracion: e.episodioDuracion,
       })),
       serieEstado: "activa",
@@ -103,7 +101,11 @@ export const useSeriesStore = create<SeriesState>((set, get) => ({
     return seriesRepo.subscribeToActiveByRoom(
       salaId,
       (serie) => set({ serieActiva: serie, serieActivaCargando: false }),
-      () => set({ serieActivaCargando: false, serieError: "No se pudo cargar la serie activa." }),
+      () =>
+        set({
+          serieActivaCargando: false,
+          serieError: "No se pudo cargar la serie activa.",
+        }),
     );
   },
   reset: () => set(estadoInicial),

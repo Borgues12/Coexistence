@@ -1,18 +1,12 @@
 // features/salas/presentation/components/ConfigHoraForm/ConfigHoraForm.tsx
-import { useState } from "react";
-import { View, Text, Pressable } from "react-native";
+import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
 import { colores } from "../../../../core/theme/tema";
 import { TarjetaSolida } from "../../../../shared/components/TarjetaSolida";
 import { Boton } from "../../../../shared/components/Boton";
 import { Sesion } from "../../../sesiones/domain/sesion.domain";
-import {
-  dateToTimeString,
-  timeStringToDate,
-} from "../../../../core/utils/fecha";
+
+import { SelectorHora } from "../../../../shared/components/SelectorHora";
 import { styles } from "./styles/configHoraForm.styles";
 
 // Estados que bloquean el cambio de hora
@@ -47,8 +41,6 @@ export function ConfigHoraForm({
   handleGuardarHora,
   sesionActual,
 }: ConfigHoraFormProps) {
-  const [mostrandoPicker, setMostrandoPicker] = useState(false);
-
   // Solo el admin puede modificar la hora de inicio
   if (!esAdmin) return null;
 
@@ -56,13 +48,6 @@ export function ConfigHoraForm({
     sesionActual &&
     ESTADOS_BLOQUEAN_CAMBIO_HORA.includes(sesionActual.sesionEstado),
   );
-
-  const handleChangePicker = (evento: DateTimePickerEvent, fecha?: Date) => {
-    setMostrandoPicker(false); // en Android el diálogo se cierra solo
-    if (evento.type === "set" && fecha) {
-      setHoraInicioInput(dateToTimeString(fecha));
-    }
-  };
 
   if (!mostrandoConfigHora) {
     return (
@@ -103,31 +88,11 @@ export function ConfigHoraForm({
     <TarjetaSolida>
       <Text style={styles.etiqueta}>Nueva hora de inicio</Text>
 
-      <Pressable
-        style={({ pressed }) => [
-          styles.selector,
-          pressed && styles.selectorPresionado,
-        ]}
-        onPress={() => setMostrandoPicker(true)}
-        disabled={guardandoHora}
-      >
-        <Text style={styles.selectorTexto}>{horaInicioInput}</Text>
-        <Ionicons
-          name="chevron-down"
-          size={20}
-          color={colores.acentoPrimario}
-        />
-      </Pressable>
-
-      {mostrandoPicker && (
-        <DateTimePicker
-          value={timeStringToDate(horaInicioInput)}
-          mode="time"
-          is24Hour
-          display="default"
-          onChange={handleChangePicker}
-        />
-      )}
+      <SelectorHora
+        valor={horaInicioInput}
+        onChange={setHoraInicioInput}
+        deshabilitado={guardandoHora}
+      />
 
       {errorHora && <Text style={styles.textoError}>{errorHora}</Text>}
 

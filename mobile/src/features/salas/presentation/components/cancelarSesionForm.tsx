@@ -31,7 +31,7 @@ export function CancelarSesionForm({
       <BotonCasino
         titulo="Cancelar sesión de hoy"
         icono="ban"
-        variante="acento"
+        variante="textoPeligro"
         onPress={() => setMostrandoInputCancelar(true)}
       />
     );

@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
     gap: espaciado.xs,
     backgroundColor: colores.fondo,
     borderRadius: bordes.radioChato,
+    alignItems: 'center'
   },
   codigoEtiqueta: {
     ...tipografia.etiqueta,

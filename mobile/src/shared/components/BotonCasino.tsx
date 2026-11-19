@@ -3,7 +3,19 @@ import { Text, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { styles, coloresTexto } from "./styles/BotonCasino.styles";
 
-type Variante = "primario" | "contorno" | "contornoClaro" | "acento" | "peligro";
+export type Variante =
+  | "primario"
+  | "secundario"
+  | "contorno"
+  | "contornoClaro"
+  | "contornoPeligro"
+  | "acento"
+  | "peligro"
+  | "critico"
+  | "textoPeligro"
+  | "fantasma"
+  | "fantasmaClaro";
+
 
 type BotonCasinoProps = {
   titulo: string;

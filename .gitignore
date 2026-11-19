@@ -12,7 +12,7 @@ web-build/
 *.expo/*
 
 # Variables de entorno y secretos
-.env
+.env*
 .env*.local
 *.pem
 *.keystore

@@ -2,6 +2,7 @@ import {
   ActivityIndicator,
   FlatList,
   Pressable,
+  ScrollView,
   Text,
   TextInput,
   View,
@@ -48,22 +49,25 @@ export function SerieScreen({ onSeleccionar }: Props) {
 
   if (!mostrarBuscador) {
     return (
-      <SafeAreaView style={styles.contenedor}>
-        {serieActiva && horario ? (
-          <SerieActivaCard
-            titulo={serieActiva.serieTitulo}
-            posterPath={serieActiva.seriePosterPath}
-            temporada={serieActiva.serieTemporadaActual}
-            episodio={serieActiva.serieEpisodioActual}
-            duracion={horario.duracion}
-            horaInicio={horario.horaInicio}
-            horaFin={horario.horaFin}
-          />
-        ) : (
-          <Text style={styles.mensaje}>
-            El administrador aún no ha elegido la serie.
-          </Text>
-        )}
+      <SafeAreaView style={styles.contenedor} edges={["top", "left", "right"]}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+          {serieActiva && horario ? (
+            <SerieActivaCard
+              titulo={serieActiva.serieTitulo}
+              posterPath={serieActiva.seriePosterPath}
+              temporada={serieActiva.serieTemporadaActual}
+              episodio={serieActiva.serieEpisodioActual}
+              nameEpisodio={horario.nombreEpisodio}
+              duracion={horario.duracion}
+              horaInicio={horario.horaInicio}
+              horaFin={horario.horaFin}
+            />
+          ) : (
+            <Text style={styles.mensaje}>
+              El administrador aún no ha elegido la serie.
+            </Text>
+          )}
+        </ScrollView>
 
         {esAdmin && serieActiva && (
           <Pressable onPress={startChange} style={styles.boton}>
