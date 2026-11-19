@@ -34,7 +34,7 @@ Representa la jornada diaria compartida por todos los miembros de la sala. Reemp
 * **Notificación de Apertura (`HORA_INICIO`):** El sistema notifica automáticamente a la sala sobre la apertura de la ventana de check-in y marca la sesión del día como `pendiente`.
 * **Apertura Manual Obligatoria:** Un miembro presente físicamente debe presionar "Iniciar Sesión" en la app para cambiar el estado a `en_curso`.
   * **Regla estricta:** El sistema nunca inicia una sesión de forma automática. Si nadie presiona el botón, la sesión permanece en `pendiente`.
-* **Generación de PIN:** Al iniciar la sesión, la app genera un PIN dinámico de 3 dígitos visible únicamente en el dispositivo del miembro que inició.
+* **Generación de PIN:** Al iniciar la sesión, la app genera un PIN dinámico de 4 dígitos visible únicamente en el dispositivo del miembro que inició.
 
 ### 3.4 Check-in por Proximidad (PIN)
 Para registrar asistencia, los miembros presentes deben ingresar en sus propios dispositivos el PIN dinámico mostrado por el iniciador.

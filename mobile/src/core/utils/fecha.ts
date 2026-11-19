@@ -1,4 +1,4 @@
-// core/utilidades/hora.utilidades.ts
+// core/utils/fecha.ts
 
 //FUNCTION: Convierte una cadena de texto en formato "HH:mm" a un objeto Date
 export function timeStringToDate(horaTexto: string): Date {

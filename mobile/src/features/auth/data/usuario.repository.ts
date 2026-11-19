@@ -12,12 +12,11 @@ import {
   type Usuario,
   type CrearUsuarioInput,
 } from '../domain/usuario.schema';
-
-const COLECCION = 'usuarios';
+import { COLLECTIONS } from '../../../core/constants/colecciones';
 
 // MÉTODO: busca un usuario por userUid. Retorna null si no existe.
 export async function findyByUserUid(userUid: string): Promise<Usuario | null> {
-  const ref = doc(db, COLECCION, userUid);
+  const ref = doc(db, COLLECTIONS.USUARIOS, userUid);
   const snap = await getDoc(ref);
 
   if (!snap.exists()) return null;
@@ -35,7 +34,7 @@ export async function createIfNotExists(
   if (existente) return existente;
 
   const datosValidados = CrearUsuarioSchema.parse(datos);
-  const ref = doc(db, COLECCION, userUid);
+  const ref = doc(db, COLLECTIONS.USUARIOS, userUid);
 
   await setDoc(ref, {
     ...datosValidados,
@@ -47,6 +46,6 @@ export async function createIfNotExists(
 
 // MÉTODO: actualiza la sala actual del usuario
 export async function updateUserRoom(userUid: string, salaId: string): Promise<void> {
-  const ref = doc(db, COLECCION, userUid);
+  const ref = doc(db, COLLECTIONS.USUARIOS, userUid);
   await updateDoc(ref, { userSalaActualId: salaId });
 }

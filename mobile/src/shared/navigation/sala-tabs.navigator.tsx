@@ -4,6 +4,7 @@ import { SalaTabsParamList } from "./types";
 import { HomeScreen } from "../../features/salas/presentation/screens/home.screen";
 import { colores } from "../../core/theme/tema";
 import { FaltasScreen } from "../../features/faltas/presentation/screens/Faltas.screen";
+import { SeriesStackNavigator } from "./series-stack.navigator";
 
 const Tab = createBottomTabNavigator<SalaTabsParamList>();
 
@@ -21,7 +22,10 @@ export function SalaTabsNavigator() {
         headerShown: false,
         tabBarActiveTintColor: colores.acentoPrimario,
         tabBarInactiveTintColor: colores.textoSobreFondo,
-        tabBarStyle: { backgroundColor: colores.fondo, borderTopColor: colores.acentoPrimario },
+        tabBarStyle: {
+          backgroundColor: colores.fondo,
+          borderTopColor: colores.acentoPrimario,
+        },
       }}
     >
       <Tab.Screen
@@ -29,14 +33,27 @@ export function SalaTabsNavigator() {
         component={HomeScreen}
         options={{
           title: "Sesión",
-          tabBarIcon: ({ color, size }) => <Ionicons name="film-outline" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="film-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Series"
+        component={SeriesStackNavigator}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="tv-outline" color={color} size={size} />
+          ),
         }}
       />
       <Tab.Screen
         name="Faltas"
         component={FaltasScreen}
         options={{
-          tabBarIcon: ({ color, size }) => <Ionicons name="alert-circle-outline" color={color} size={size} />,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="alert-circle-outline" color={color} size={size} />
+          ),
         }}
       />
     </Tab.Navigator>

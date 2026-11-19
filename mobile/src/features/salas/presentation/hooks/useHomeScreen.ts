@@ -1,15 +1,18 @@
 // features/salas/presentation/hooks/useHomeScreen.ts
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useAuthStore } from "../../../auth/presentation/store/use-auth-store";
 import { Sala } from "../../domain/sala.domain";
 import { useAlertaStore } from "../../../../shared/alertas/store/use-alerta.store";
 import { useSesionStore } from "../../../sesiones/presentation/store/sesion.store";
 import { useSalaStore } from "../store/use-sala-store";
+import { useSyncContextoSala } from "./useSyncContextoSala";
+import { useFocusEffect } from "@react-navigation/native"; // o desde expo-router, si lo usas
 
 export function useHomeScreen() {
   const usuario = useAuthStore((state) => state.usuario);
   const actualizarUsuario = useAuthStore((state) => state.actualizarUsuario);
   const [sala, setSala] = useState<Sala | null>(null);
+  useSyncContextoSala(sala);
   const [cargandoSala, setCargandoSala] = useState(true);
   const [saliendoDeSala, setSaliendoDeSala] = useState(false);
 
@@ -27,6 +30,24 @@ export function useHomeScreen() {
   const [guardandoHora, setGuardandoHora] = useState(false);
   const [errorHora, setErrorHora] = useState<string | null>(null);
 
+  const refrescarSala = useCallback(async () => {
+    if (!usuario?.userSalaActualId) {
+      setSala(null);
+      setCargandoSala(false);
+      return;
+    }
+    try {
+      setSala(await obtenerSalaStore(usuario.userSalaActualId));
+    } finally {
+      setCargandoSala(false);
+    }
+  }, [usuario?.userSalaActualId]);
+
+  useFocusEffect(
+    useCallback(() => {
+      refrescarSala();
+    }, [refrescarSala]),
+  );
   const {
     sesionActual,
     sesionCargando,
@@ -34,16 +55,6 @@ export function useHomeScreen() {
     suscribirseASesionDeHoy,
     cancelarSesionPorAdmin,
   } = useSesionStore();
-
-  useEffect(() => {
-    if (!usuario?.userSalaActualId) {
-      setCargandoSala(false);
-      return;
-    }
-    obtenerSalaStore(usuario.userSalaActualId)
-      .then(setSala)
-      .finally(() => setCargandoSala(false));
-  }, [usuario?.userSalaActualId]);
 
   useEffect(() => {
     if (!usuario?.userSalaActualId) return;
@@ -84,8 +95,6 @@ export function useHomeScreen() {
     const ESTADOS_BLOQUEAN_CAMBIO_HORA = ["pendiente", "en_curso", "aplazada"];
 
     if (!sala) return;
-    setGuardandoHora(true);
-    setErrorHora(null);
 
     //no se puede cambiar la hora si hay una sesion activa
     if (
@@ -97,9 +106,14 @@ export function useHomeScreen() {
       );
       return;
     }
-    
+
+    setGuardandoHora(true);
+    setErrorHora(null);
+
     try {
-      await actualitarTiempoStore(sala.salaId, horaInicioInput.trim());
+      const nuevaHora = horaInicioInput.trim();
+      await actualitarTiempoStore(sala.salaId, nuevaHora);
+      setSala({ ...sala, salaHoraInicio: nuevaHora });
       setMostrandoConfigHora(false);
     } catch (err) {
       setErrorHora(
