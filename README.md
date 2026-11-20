@@ -2,8 +2,6 @@
   <img src="docs/images/banner.png" alt="Coexistence" width="100%">
 </p>
 
-# ◆ Coexistence
-
 ### Que nadie llegue tarde a la función.
 
 Coexistence es una app móvil para organizar la función diaria de series entre amigos o familia: a qué hora empieza, quién ya llegó, qué se está viendo y quién acumuló una falta por quedarse dormido en casa.
@@ -14,10 +12,7 @@ Es un proyecto personal pero puede servir a las personas tecnológicas como yo e
 > **Estado: alfa.** Ya se usa a diario en un grupo real, pero sigue cambiando. Si algo falla, avísame en la sección [Reportar un error](#-reportar-un-error).
 
 <p align="center">
-  <img src="docs/images/pantalla-sala.png" alt="Sala" width="22%">
-  <img src="docs/images/pantalla-sesion.png" alt="Sesión con PIN" width="22%">
-  <img src="docs/images/pantalla-faltas.png" alt="Faltas" width="22%">
-  <img src="docs/images/pantalla-serie.png" alt="Serie en curso" width="22%">
+  <img src="docs/images/app-preview.png" alt="Publicidad" width="100%">
 </p>
 
 ## ◆ Cómo funciona
@@ -63,18 +58,31 @@ Es un proyecto personal pero puede servir a las personas tecnológicas como yo e
 
 ## ◆ Diseño
 
-Ambiente de teatro clásico: azul noche, detalles dorados, texto color crema como papel de cartel y burdeos para el drama. Esquinas casi rectas y líneas finas doradas, al estilo Art Decó. Tipografías Poppins (títulos) y PT Serif (cuerpo).
+La paleta de colores y la estética visual de la aplicación se inspiraron en el **Art Decó**  y las luces de Casino:
 
 <p align="center">
-  <img src="docs/images/inspiracion-1.jpg" alt="Inspiración Art Decó 1" width="45%">
-  <img src="docs/images/inspiracion-2.jpg" alt="Inspiración Art Decó 2" width="45%">
+  <img src="docs/images/grangatsby.jpg" alt="Inspiración Art Decó 1" width="40%">
+  <img src="docs/images/casino.jpg" alt="Inspiración Art Decó 2" width="50%">
 </p>
 
 ## ◆ Tecnologías
 
-React Native + Expo, TypeScript, Firebase (Auth, Firestore, Cloud Messaging y Functions), Google Sign-In, TMDB API con Axios, Zustand y Zod. pnpm en la app y npm en las funciones.
+### Core & Frontend
+* ![React Native](https://img.shields.io/badge/React_Native-20232A?style=flat-square&logo=react&logoColor=61DAFB) **+ Expo** & ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)  — Base de la aplicación móvil y tipado estricto.
+* **Zustand** — Gestión de estado global ligera y predecible.
+* **Zod** — Validación de esquemas y datos en tiempo de ejecución.
+* **Axios** — Cliente HTTP para el consumo de la **TMDB API**.
 
-La arquitectura es una Clean Architecture simplificada con Repository Pattern: ninguna pantalla toca Firestore ni APIs externas directamente, todo pasa por un repositorio.
+### Backend, Auth & Servicios en la Nube
+* ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black) — Autenticación (*Firebase Auth* + *Google Sign-In*), base de datos en tiempo real (*Cloud Firestore*), notificaciones push (*Cloud Messaging*) y lógica serverless (*Cloud Functions*).
+* **TMDB API** — Fuente de información y catálogo multimedia.
+
+### Gestión de Paquetes
+* ![pnpm](https://img.shields.io/badge/pnpm-F69220?style=flat-square&logo=pnpm&logoColor=white) — Gestor de paquetes principal en la aplicación.
+* ![npm](https://img.shields.io/badge/npm-CB3837?style=flat-square&logo=npm&logoColor=white) — Gestor utilizado en las *Cloud Functions*.
+
+### Arquitectura
+La aplicación sigue una **Clean Architecture simplificada con Repository Pattern**: las vistas/pantallas no acceden directamente a *Firestore* ni a APIs externas; todo flujo de datos se centraliza y abstrae a través de repositorios para mantener el desacople y facilitar el mantenimiento.
 
 ## ◆ Descarga
 
