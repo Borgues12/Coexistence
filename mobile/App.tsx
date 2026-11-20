@@ -10,6 +10,8 @@ import {
   Poppins_500Medium,
   Poppins_600SemiBold,
 } from "@expo-google-fonts/poppins";
+import { Monoton_400Regular } from "@expo-google-fonts/monoton";
+import { PoiretOne_400Regular } from "@expo-google-fonts/poiret-one";
 import { PTSerif_400Regular } from "@expo-google-fonts/pt-serif";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useNotificacionesSala } from "./src/features/salas/presentation/hooks/useNotificacionesSala";
@@ -38,6 +40,8 @@ export default function App() {
     Poppins_500Medium,
     Poppins_600SemiBold,
     PTSerif_400Regular,
+    Monoton_400Regular,
+    PoiretOne_400Regular,
   });
 
   const { isLoading, setUser } = useAuthStore();

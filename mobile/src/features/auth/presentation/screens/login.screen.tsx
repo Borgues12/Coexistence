@@ -7,11 +7,7 @@ import {
   signOutUser,
 } from "../../data/auth.repository";
 import { BotonCasino } from "../../../../shared/components/BotonCasino";
-import {
-  colores,
-  tipografia,
-  espaciado,
-} from "../../../../core/theme/tema";
+import { colores, tipografia, espaciado } from "../../../../core/theme/tema";
 
 export function LoginScreen() {
   const user = useAuthStore((state) => state.user);
@@ -55,45 +51,53 @@ export function LoginScreen() {
           style={styles.logo}
           resizeMode="contain"
         />
-        <Text style={styles.titulo}>COEXISTENCE</Text>
-        <Text style={styles.subtitulo}>Convivencia audiovisual</Text>
+        <Text style={styles.titulo} numberOfLines={1} adjustsFontSizeToFit>
+          COEXISTENCE
+        </Text>
+        <View style={styles.lemaFila}>
+          <View style={styles.filete} />
+          <Text style={styles.subtitulo}>Convivencia audiovisual</Text>
+          <View style={styles.filete} />
+        </View>{" "}
       </View>
 
-      <View style={styles.acciones}>
-        {user ? (
-          <BotonCasino
-            titulo="Cerrar sesión"
-            icono="log-out-outline"
-            variante="textoPeligro"
-            onPress={handleSignOut}
-          />
-        ) : (
-          <BotonCasino
-            titulo="Continuar con Google"
-            icono="logo-google"
-            variante="primario"
-            onPress={handleSignIn}
-          />
+      <View style={styles.bloqueInferior}>
+        <View style={styles.acciones}>
+          {user ? (
+            <BotonCasino
+              titulo="Cerrar sesión"
+              icono="log-out-outline"
+              variante="textoPeligro"
+              onPress={handleSignOut}
+            />
+          ) : (
+            <BotonCasino
+              titulo="Continuar con Google"
+              icono="logo-google"
+              variante="primario"
+              onPress={handleSignIn}
+            />
+          )}
+        </View>
+
+        {__DEV__ && (
+          <View style={styles.devLoginContainer}>
+            <Text style={styles.devLabel}>Solo desarrollo</Text>
+            <BotonCasino
+              titulo="Login como Usuario A"
+              icono="person-outline"
+              variante="contorno"
+              onPress={() => handleDevLogin("test.a@coexistence.ec")}
+            />
+            <BotonCasino
+              titulo="Login como Usuario B"
+              icono="person-outline"
+              variante="contorno"
+              onPress={() => handleDevLogin("test.b@coexistence.ec")}
+            />
+          </View>
         )}
       </View>
-
-      {__DEV__ && (
-        <View style={styles.devLoginContainer}>
-          <Text style={styles.devLabel}>Solo desarrollo</Text>
-          <BotonCasino
-            titulo="Login como Usuario A"
-            icono="person-outline"
-            variante="contorno"
-            onPress={() => handleDevLogin("test.a@coexistence.ec")}
-          />
-          <BotonCasino
-            titulo="Login como Usuario B"
-            icono="person-outline"
-            variante="contorno"
-            onPress={() => handleDevLogin("test.b@coexistence.ec")}
-          />
-        </View>
-      )}
     </SafeAreaView>
   );
 }
@@ -101,45 +105,52 @@ export function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    padding: espaciado.lg,
+    justifyContent: "flex-start",
+    paddingTop: espaciado.sm,
+    paddingBottom: espaciado.md,
     backgroundColor: colores.fondo,
-    gap: espaciado.xl,
   },
   cabecera: {
     alignItems: "center",
-    gap: espaciado.xs,
+    gap: 0,
+    paddingHorizontal: espaciado.md,
   },
   logo: {
-    width: 200,
-    height: 200,
-    marginBottom: espaciado.sm,
+    width: 360,
+    height: 360,
+    marginTop: espaciado.lg, // sube el logo hacia arriba, recorta el padding superior
+    marginBottom: -50, // acerca el título al dibujo, recorta el padding inferior
   },
   titulo: {
-    ...tipografia.display,
-    fontSize: 34,
-    lineHeight: 40,
-    letterSpacing: 3.5,
+  ...tipografia.marquesinaTitulo,
+  lineHeight: 56,
+  width: "100%",
+  textTransform: "uppercase",
+  color: colores.acentoPrimario,
+  textAlign: "center",
+  textShadowColor: "#C9A24B80",
+  textShadowOffset: { width: 0, height: 0 },
+  textShadowRadius: 12,
+},
+  subtitulo: {
+    ...tipografia.marquesinaLema,
+    lineHeight: 22,
     textTransform: "uppercase",
-    color: colores.acentoPrimario,
+    color: colores.textoSobreFondo,
     textAlign: "center",
   },
-  subtitulo: {
-    ...tipografia.cuerpo,
-    fontSize: 18,
-    lineHeight: 24,
-    letterSpacing: 1.2,
-    color: colores.textoSecundario,
-    textAlign: "center",
+  bloqueInferior: {
+    paddingHorizontal: espaciado.lg,
+    gap: espaciado.md,
+    marginTop: espaciado.xl, // separación entre el lema y los botones
   },
   acciones: {
     width: "100%",
   },
   devLoginContainer: {
-    marginTop: espaciado.md,
     borderTopWidth: 1,
     borderTopColor: colores.bordeSutil,
-    paddingTop: espaciado.md,
+    paddingTop: espaciado.sm,
     gap: espaciado.sm,
     opacity: 0.85,
   },
@@ -150,5 +161,16 @@ const styles = StyleSheet.create({
     color: colores.textoSecundario,
     textAlign: "center",
     marginBottom: espaciado.xs,
+  },
+  lemaFila: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: espaciado.sm,
+    marginTop: espaciado.xs,
+  },
+  filete: {
+    width: 28,
+    height: 1,
+    backgroundColor: colores.acentoPrimario,
   },
 });

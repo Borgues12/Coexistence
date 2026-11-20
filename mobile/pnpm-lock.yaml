@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@expo-google-fonts/monoton':
+        specifier: ^0.4.1
+        version: 0.4.1
+      '@expo-google-fonts/poiret-one':
+        specifier: ^0.4.1
+        version: 0.4.1
       '@expo-google-fonts/poppins':
         specifier: ^0.4.1
         version: 0.4.1
@@ -459,6 +465,12 @@ packages:
   '@babel/types@7.29.8':
     resolution: {integrity: sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg==}
     engines: {node: '>=6.9.0'}
+
+  '@expo-google-fonts/monoton@0.4.1':
+    resolution: {integrity: sha512-Yk229NM3zUJbwPRkllRW8svBeLKS2NbWuJhvWu8hSly7Y+h7MibhYxcbzcp0ovkEnTlXLQZRwDUbClrUgOP2Zg==}
+
+  '@expo-google-fonts/poiret-one@0.4.1':
+    resolution: {integrity: sha512-77QCS2OduJGDAB3RdOk5hb/xXL8BHqZSQzO/6flLYwnR9lu/E0Y/FTYTYShX4XE5jQfnLwA+KaBbJzP3TT85DA==}
 
   '@expo-google-fonts/poppins@0.4.1':
     resolution: {integrity: sha512-LiX5oEryJqDt3UmWwr4oqf11hGMz/JEffkkNcZ3UtGwyoMFzXmBmTwcrAWrEttxypxmLNmPykDg+CY2VjKve9A==}
@@ -3528,6 +3540,10 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
+
+  '@expo-google-fonts/monoton@0.4.1': {}
+
+  '@expo-google-fonts/poiret-one@0.4.1': {}
 
   '@expo-google-fonts/poppins@0.4.1': {}
 

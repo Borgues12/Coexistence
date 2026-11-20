@@ -1,5 +1,4 @@
-// core/tema.ts
-// core/tema/tema.ts (reemplazar solo el objeto `colores`)
+// core/theme/tema.ts
 export const colores = {
   // Base (de la paleta)
   fondo: "#2A2824",
@@ -53,6 +52,16 @@ export const tipografia = {
     fontSize: 13,
     letterSpacing: 2.5,
     textTransform: "uppercase",
+  },
+  marquesinaTitulo: {
+    fontFamily: "Monoton_400Regular",
+    fontSize: 40,
+    letterSpacing: 3,
+  },
+  marquesinaLema: {
+    fontFamily: "PoiretOne_400Regular",
+    fontSize: 15,
+    letterSpacing: 6,
   },
 } as const;
 
